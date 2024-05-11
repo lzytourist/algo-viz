@@ -5,7 +5,6 @@ cffi==1.16.0; platform_python_implementation != 'PyPy'
 charset-normalizer==3.3.2; python_full_version >= '3.7.0'
 cryptography==42.0.7; python_version >= '3.7'
 defusedxml==0.8.0rc2; python_version >= '3.6'
-django==5.0.6; python_version >= '3.10'
 django-cors-headers==4.3.1; python_version >= '3.8'
 django-templated-mail==1.1.1
 djangorestframework==3.15.1; python_version >= '3.6'
@@ -23,3 +22,6 @@ social-auth-app-django==5.4.1; python_version >= '3.8'
 social-auth-core==4.5.4; python_version >= '3.8'
 sqlparse==0.5.0; python_version >= '3.8'
 urllib3==2.2.1; python_version >= '3.8'
+
+Django~=5.0.6
+djangorestframework~=3.15.1
