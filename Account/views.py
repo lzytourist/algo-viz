@@ -1,3 +1,4 @@
+from djoser.views import UserViewSet
 from rest_framework.generics import ListCreateAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -21,3 +22,9 @@ class ProfileListCreateAPIView(ListCreateAPIView):
         return Response(
             data=serializer(data=profile).data
         )
+
+
+class ActivationView(UserViewSet):
+    # TODO: User email activation
+    def activation(self, request, *args, **kwargs):
+        pass

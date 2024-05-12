@@ -15,7 +15,6 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
@@ -29,7 +28,6 @@ ALLOWED_HOSTS = []
 
 CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_WHITELIST = []
-
 
 # Application definition
 
@@ -48,6 +46,7 @@ INSTALLED_APPS = [
 
     # apps
     'Account',
+    'Training',
 ]
 
 MIDDLEWARE = [
@@ -80,7 +79,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'AlgoViz.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
@@ -96,7 +94,6 @@ DATABASES = {
         }
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -116,7 +113,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
@@ -128,7 +124,6 @@ USE_I18N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
@@ -139,8 +134,27 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# Email
+EMAIL_HOST = 'sandbox.smtp.mailtrap.io'
+EMAIL_HOST_USER = 'c9715b797d2c80'
+EMAIL_HOST_PASSWORD = '19cf15155f5db0'
+EMAIL_PORT = '2525'
+
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.TokenAuthentication',
     )
+}
+
+DJOSER = {
+    'USER_ID_FIELD': 'email',
+    'SEND_CONFIRMATION_EMAIL': True,
+    'SEND_ACTIVATION_EMAIL': True,
+    'ACTIVATION_URL': 'activate/{uid}/{token}',
+    'SERIALIZERS': {
+        'user_create': 'Account.serializers.CustomUserSerializer',
+        'user': 'Account.serializers.CustomUserSerializer',
+        'current_user': 'Account.serializers.CustomUserSerializer',
+    }
 }
