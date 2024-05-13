@@ -24,7 +24,3 @@ class ProfileListCreateAPIView(ListCreateAPIView):
         )
 
 
-class ActivationView(UserViewSet):
-    # TODO: User email activation
-    def activation(self, request, *args, **kwargs):
-        pass

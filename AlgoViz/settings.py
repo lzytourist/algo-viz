@@ -149,9 +149,8 @@ REST_FRAMEWORK = {
 
 DJOSER = {
     'USER_ID_FIELD': 'email',
-    'SEND_CONFIRMATION_EMAIL': True,
-    'SEND_ACTIVATION_EMAIL': True,
-    'ACTIVATION_URL': 'activate/{uid}/{token}',
+    'SEND_CONFIRMATION_EMAIL': False,
+    'SEND_ACTIVATION_EMAIL': False,
     'SERIALIZERS': {
         'user_create': 'Account.serializers.CustomUserSerializer',
         'user': 'Account.serializers.CustomUserSerializer',
