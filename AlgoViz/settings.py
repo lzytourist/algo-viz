@@ -64,7 +64,7 @@ ROOT_URLCONF = 'AlgoViz.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -140,6 +140,7 @@ EMAIL_HOST_USER = 'c9715b797d2c80'
 EMAIL_HOST_PASSWORD = '19cf15155f5db0'
 EMAIL_PORT = '2525'
 
+EMAIL_VERIFICATION_MAIL_DELAY = 5
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (

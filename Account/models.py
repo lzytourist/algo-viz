@@ -17,3 +17,10 @@ class Profile(models.Model):
         max_length=200
     )
     registration_date = models.DateField(auto_now_add=True)
+
+
+class AccountVerification(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='account_verification')
+    token = models.TextField(max_length=100)
+    sent_at = models.DateTimeField(auto_now_add=True)
+    is_verified = models.BooleanField(default=False)
