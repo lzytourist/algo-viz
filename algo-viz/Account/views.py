@@ -86,8 +86,9 @@ class ProfileActivationView(ModelViewSet):
             verification_token = AccountVerification.objects.filter(user=request.user).get()
             if verification_token.sent_at >= timezone.now() - timezone.timedelta(minutes=EMAIL_VERIFICATION_MAIL_DELAY):
                 if int(verification_token.token) == request.data.get('token'):
-                    verification_token.is_verified = True
-                    verification_token.save()
+                    user = request.user
+                    user.is_verified = True
+                    user.save()
 
                     return Response(
                         data={
@@ -95,8 +96,7 @@ class ProfileActivationView(ModelViewSet):
                             'status': 'email_verified'
                         }
                     )
-        except AccountVerification.DoesNotExist as e:
-            print(e)
+        except AccountVerification.DoesNotExist:
             pass
 
         return Response(
