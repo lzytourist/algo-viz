@@ -61,8 +61,9 @@ const BubbleSort = () => {
                     setArray(tempArray.slice());
                     setIndex(-2);
                 }
-                setLastSorted(len - i - 1);
             }
+            
+            setLastSorted(len - i - 1);
         }
 
         setSorting(2);
