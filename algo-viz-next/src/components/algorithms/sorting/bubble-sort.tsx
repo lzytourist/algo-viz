@@ -2,28 +2,28 @@
 
 import {useEffect, useState} from "react";
 import {Button} from "@/components/ui/button";
-import {sort} from "next/dist/build/webpack/loaders/css-loader/src/utils";
+import {SortingState} from "@/lib/utils";
 
 const BubbleSort = () => {
-    const [array, setArray] = useState([1, 2, 3, 4, 5, 6, 7]);
-    const [sorting, setSorting] = useState(0);
-    const [lastSorted, setLastSorted] = useState(10000);
-    const [cmpIndex, setCmpIndex] = useState(-2);
-    const [index, setIndex] = useState(-2);
+    const [array, setArray] = useState<number[]>([]);
+    const [sorting, setSorting] = useState<SortingState>(SortingState.NOT_SORTED);
+    const [lastSorted, setLastSorted] = useState<number>(10000);
+    const [comparisonIndex, setComparisonIndex] = useState<number>(-2);
+    const [swapIndex, setSwapIndex] = useState<number>(-2);
 
-    const getRandomNumber = (start: number, end: number) => {
-        return Math.ceil(Math.random() * (end - start) + end);
+    const getRandomNumber = (max: number, min: number) => {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
     };
 
     const generateArray = () => {
-        setIndex(-2);
+        setSwapIndex(-2);
         setSorting(0);
 
         let tempArray = [];
-        let len = getRandomNumber(5, 10);
+        let len = getRandomNumber(8, 15);
 
         for (let i = 0; i < len; ++i) {
-            tempArray.push(getRandomNumber(2, 12))
+            tempArray.push(getRandomNumber(2, 18))
         }
 
         setArray(tempArray);
@@ -35,7 +35,8 @@ const BubbleSort = () => {
     }, []);
 
     const bubbleSort = async () => {
-        setSorting(1);
+        setSorting(SortingState.STARTED);
+
         const len = array.length;
         let tempArray = array.slice();
 
@@ -44,12 +45,12 @@ const BubbleSort = () => {
             sorted = true;
 
             for (let j = 0; j < len - i - 1; j++) {
-                setCmpIndex(j);
+                setComparisonIndex(j);
 
                 await new Promise((resolve) => setTimeout(resolve, 800));
 
                 if (tempArray[j] > tempArray[j + 1]) {
-                    setIndex(j);
+                    setSwapIndex(j);
                     sorted = false;
 
                     await new Promise((resolve) => setTimeout(resolve, 800));
@@ -59,30 +60,31 @@ const BubbleSort = () => {
                     tempArray[j + 1] = temp;
 
                     setArray(tempArray.slice());
-                    setIndex(-2);
+                    setSwapIndex(-2);
                 }
             }
-            
+
             setLastSorted(len - i - 1);
         }
 
-        setSorting(2);
+        setSorting(SortingState.SORTED);
         setLastSorted(0);
-        setCmpIndex(-2);
+        setComparisonIndex(-2);
     };
 
 
     return (
         <div>
-            <div className={'flex justify-center items-end min-h-[350px]'}>
+            <div className={'border-2 border-dashed mx-4 flex justify-center items-end min-h-[280px]'}>
                 {array.map((value: number, idx: number) => (
                     <div
                         className={
                             `mx-2 text-center ${
+                                sorting == SortingState.SORTED ? 'bg-green-500 text-white' :
                                 idx >= lastSorted ? 'bg-green-400' :
-                                index == -2 && cmpIndex == idx ? 'bg-orange-200' : 
-                                    index == -2 && cmpIndex + 1 == idx ? 'bg-orange-400' :
-                                        index == idx ? 'bg-red-600' : 'bg-sky-400'
+                                swapIndex == -2 && comparisonIndex == idx ? 'bg-orange-200' : 
+                                    swapIndex == -2 && comparisonIndex + 1 == idx ? 'bg-orange-400' :
+                                        swapIndex == idx ? 'bg-red-600' : 'bg-sky-400'
                             }`
                         }
                         key={idx}
@@ -98,11 +100,11 @@ const BubbleSort = () => {
             </div>
             <div className="text-center my-6">
                 <Button variant={'secondary'} size={'lg'} onClick={generateArray}
-                        disabled={sorting == 1}>
+                        disabled={sorting == SortingState.STARTED}>
                     Generate Array
                 </Button>
                 <Button variant={'destructive'} size={'lg'} onClick={bubbleSort}
-                        disabled={sorting == 1 || sorting == 2}>
+                        disabled={sorting == SortingState.STARTED || sorting == SortingState.SORTED}>
                     Sort
                 </Button>
             </div>
