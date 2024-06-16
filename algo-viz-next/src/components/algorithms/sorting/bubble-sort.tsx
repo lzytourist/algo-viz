@@ -12,6 +12,11 @@ const BubbleSort = () => {
     const [swapIndex, setSwapIndex] = useState<number>(-2);
 
     const getRandomNumber = (max: number, min: number) => {
+        if (max < min) {
+            max ^= min;
+            min ^= max;
+            max ^= min;
+        }
         return Math.floor(Math.random() * (max - min + 1)) + min;
     };
 
@@ -23,7 +28,7 @@ const BubbleSort = () => {
         let len = getRandomNumber(8, 15);
 
         for (let i = 0; i < len; ++i) {
-            tempArray.push(getRandomNumber(2, 18))
+            tempArray.push(getRandomNumber(20, 2))
         }
 
         setArray(tempArray);
@@ -75,13 +80,13 @@ const BubbleSort = () => {
 
     return (
         <div>
-            <div className={'border-2 border-dashed mx-4 flex justify-center items-end min-h-[280px]'}>
+            <div className={'border-2 border-dashed mx-4 flex justify-center items-end min-h-[305px]'}>
                 {array.map((value: number, idx: number) => (
                     <div
                         className={
-                            `mx-2 text-center ${
+                            `mx-2 text-center rounded-t ${
                                 sorting == SortingState.SORTED ? 'bg-green-500 text-white' :
-                                idx >= lastSorted ? 'bg-green-400' :
+                                idx >= lastSorted ? 'bg-green-400 text-white' :
                                 swapIndex == -2 && comparisonIndex == idx ? 'bg-orange-200' : 
                                     swapIndex == -2 && comparisonIndex + 1 == idx ? 'bg-orange-400' :
                                         swapIndex == idx ? 'bg-red-600' : 'bg-sky-400'
