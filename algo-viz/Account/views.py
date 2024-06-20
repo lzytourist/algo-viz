@@ -3,12 +3,13 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.generics import ListCreateAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.views import APIView
 from rest_framework import status
 
 from AlgoViz.settings import EMAIL_VERIFICATION_MAIL_DELAY
 
 from .models import Profile, AccountVerification
-from .serializers import ProfileSerializer, AccountVerificationSerializer
+from .serializers import ProfileSerializer, AccountVerificationSerializer, PasswordChangeSerializer
 from .permissions import NotVerified, IsVerified
 from .utils import send_verification_email
 
@@ -85,7 +86,7 @@ class ProfileActivationView(ModelViewSet):
         try:
             verification_token = AccountVerification.objects.filter(user=request.user).get()
             if verification_token.sent_at >= timezone.now() - timezone.timedelta(minutes=EMAIL_VERIFICATION_MAIL_DELAY):
-                if int(verification_token.token) == request.data.get('token'):
+                if int(verification_token.token) == int(request.data.get('token')):
                     user = request.user
                     user.is_verified = True
                     user.save()
@@ -106,3 +107,17 @@ class ProfileActivationView(ModelViewSet):
             },
             status=status.HTTP_400_BAD_REQUEST
         )
+
+
+class PasswordChangeView(APIView):
+    permission_classes = [IsAuthenticated, IsVerified]
+    serializer_class = PasswordChangeSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data, context={'request': request})
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response({
+                "message": "Password changed successfully."
+            }, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

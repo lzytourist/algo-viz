@@ -15,7 +15,8 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     gender = models.TextField(
         max_length=20,
-        choices=Gender.choices
+        choices=Gender.choices,
+        default=Gender.MALE
     )
     institute = models.TextField(
         max_length=200
