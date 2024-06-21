@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.db import models
+from tinymce.models import HTMLField
 
 User = get_user_model()
 
@@ -20,6 +21,8 @@ class AlgorithmCategory(models.Model):
 
     class Meta:
         db_table = 'algorithm_categories'
+        verbose_name = 'Category'
+        verbose_name_plural = 'Categories'
 
 
 class Algorithm(models.Model):
@@ -31,7 +34,7 @@ class Algorithm(models.Model):
         on_delete=models.PROTECT
     )
     name = models.CharField(max_length=255)
-    description = models.TextField()
+    description = HTMLField()
     slug = models.SlugField(max_length=255, unique=True)
     component = models.CharField(max_length=20)
     created_at = models.DateTimeField(auto_now_add=True)

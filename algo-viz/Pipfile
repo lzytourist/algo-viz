@@ -9,6 +9,7 @@ djangorestframework = "*"
 djoser = "*"
 django-cors-headers = "*"
 mysqlclient = "*"
+django-tinymce = "*"
 
 [dev-packages]
 
