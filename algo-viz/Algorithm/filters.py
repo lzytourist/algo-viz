@@ -9,11 +9,10 @@ class YearFilter(SimpleListFilter):
     parameter_name = "year"
 
     def lookups(self, request, model_admin):
-        years = Algorithm.objects.all()
-        print(years)
-        return []
+        years = Algorithm.objects.datetimes('created_at', 'year')
+        return [(year.year, year.year) for year in years]
 
     def queryset(self, request, queryset):
-        if self.value() is None:
+        if self.value():
             return queryset.filter(created_at__year=self.value())
         return queryset

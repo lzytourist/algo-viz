@@ -10,7 +10,7 @@ from AlgoViz.settings import EMAIL_VERIFICATION_MAIL_DELAY
 
 from .models import Profile, AccountVerification
 from .serializers import ProfileSerializer, AccountVerificationSerializer, PasswordChangeSerializer
-from .permissions import NotVerified, IsVerified
+from AlgoViz.permissions import NotVerified, IsVerified
 from .utils import send_verification_email
 
 

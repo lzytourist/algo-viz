@@ -28,6 +28,7 @@ urlpatterns = [
     path('api/auth/', include('djoser.urls.authtoken')),
 
     path('api/', include('Account.urls')),
+    path('api/algorithms/', include('Algorithm.urls')),
 ]
 
 if settings.DEBUG:
