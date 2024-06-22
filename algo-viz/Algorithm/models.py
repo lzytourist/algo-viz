@@ -67,7 +67,7 @@ class Comment(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Comment by {self.user.name} on {self.algorithm.name}"
+        return f"Comment by {self.user.first_name} {self.user.last_name} on {self.algorithm.name}"
 
     class Meta:
         db_table = 'algorithm_comments'
