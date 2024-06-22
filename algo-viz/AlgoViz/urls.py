@@ -25,7 +25,8 @@ urlpatterns = [
     path('tinymce/', include('tinymce.urls')),
 
     path('api/auth/', include('djoser.urls')),
-    path('api/auth/', include('djoser.urls.authtoken')),
+    # path('api/auth/', include('djoser.urls.authtoken')),
+    path('api/auth/', include('Account.urls')),
 
     path('api/', include('Account.urls')),
     path('api/algorithms/', include('Algorithm.urls')),

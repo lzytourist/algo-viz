@@ -31,7 +31,10 @@ AUTH_USER_MODEL = 'Account.User'
 ALLOWED_HOSTS = []
 
 CORS_ALLOW_CREDENTIALS = True
-CORS_ORIGIN_WHITELIST = []
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000',
+    'http://127.0.0.1:3000',
+]
 
 # Application definition
 
@@ -59,6 +62,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -156,7 +160,8 @@ EMAIL_VERIFICATION_MAIL_DELAY = 5  # Minutes
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.TokenAuthentication',
+        # 'rest_framework.authentication.TokenAuthentication',
+        'Account.authentication.CustomTokenAuthentication',
     ),
     'DEFAULT_FILTER_BACKENDS': (
         'django_filters.rest_framework.DjangoFilterBackend',
@@ -169,11 +174,12 @@ REST_FRAMEWORK = {
 }
 
 DJOSER = {
-    'USER_ID_FIELD': 'email',
-    'SEND_CONFIRMATION_EMAIL': False,
-    'SEND_ACTIVATION_EMAIL': False,
+    'PASSWORD_RESET_CONFIRM_URL': 'password-reset/{uid}/{token}',
+    'SEND_ACTIVATION_EMAIL': True,
+    'ACTIVATION_URL': 'activation/{uid}/{token}',
+    'USER_CREATE_PASSWORD_RETYPE': True,
+    'PASSWORD_RESET_CONFIRM_RETYPE': True,
     'SERIALIZERS': {
-        'user_create': 'Account.serializers.CustomUserSerializer',
         'user': 'Account.serializers.CustomUserSerializer',
         'current_user': 'Account.serializers.CustomUserSerializer',
     }
@@ -191,3 +197,12 @@ TINYMCE_DEFAULT_CONFIG = {
                "alignright alignjustify | bullist numlist outdent indent | "
                "removeformat | help",
 }
+
+DOMAIN = 'localhost:3000'  # Account activation email and password rest
+
+AUTH_COOKIE = 'token'
+AUTH_COOKIE_MAX_AGE = 60 * 60 * 24
+AUTH_COOKIE_SECURE = False
+AUTH_COOKIE_HTTPONLY = True
+AUTH_COOKIE_SAMESITE = None
+AUTH_COOKIE_PATH = '/'

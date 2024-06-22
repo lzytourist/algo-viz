@@ -1,26 +1,82 @@
+from django import forms
 from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin as BaseUserAdmin, UserChangeForm as BaseUserChangeForm, \
+    UserCreationForm as BaseUserCreationForm
+from django.contrib.auth.forms import ReadOnlyPasswordHashField
+from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
-from .models import User, Profile, AccountVerification
+from .models import User
 
 
-class ProfileInline(admin.StackedInline):
-    model = Profile
-    can_delete = False
-    verbose_name_plural = 'Profile'
-    fk_name = 'user'
+class UserCreationForm(BaseUserCreationForm):
+    password1 = forms.CharField(label="Password", widget=forms.PasswordInput)
+    password2 = forms.CharField(
+        label="Password confirmation", widget=forms.PasswordInput
+    )
+
+    class Meta:
+        model = User
+        fields = ('email', 'password1', 'password2')
+
+    def clean_password2(self):
+        password1 = self.cleaned_data.get("password1")
+        password2 = self.cleaned_data.get("password2")
+        if password1 and password2 and password1 != password2:
+            raise ValidationError("Passwords don't match")
+        return password2
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.set_password(self.cleaned_data["password1"])
+        if commit:
+            user.save()
+        return user
 
 
-class UserAdmin(admin.ModelAdmin):
-    inlines = [ProfileInline, ]
-    list_display = ('email', 'first_name', 'last_name', 'get_gender', 'is_active', 'is_verified')
-    list_filter = ('is_verified', 'is_active', 'profile__gender')
-    search_fields = ('email', 'first_name', 'last_name', 'profile__gender', 'profile__institute')
+class UserChangeForm(BaseUserChangeForm):
+    password = ReadOnlyPasswordHashField()
 
-    def get_gender(self, obj):
-        return obj.profile.gender.capitalize()
+    class Meta:
+        model = User
+        fields = ["email", "password", "date_of_birth", "is_active", "is_superuser"]
 
-    get_gender.short_description = 'Gender'
+
+class UserAdmin(BaseUserAdmin):
+    list_display = ["email", "date_of_birth", "is_active", "is_superuser"]
+    search_fields = ["email", "name"]
+    ordering = ["email"]
+    filter_horizontal = []
+
+    form = UserChangeForm
+    add_form = UserCreationForm
+
+    fieldsets = (
+        (None, {"fields": ("email", "password")}),
+        (_("Personal info"), {"fields": ("first_name", "last_name", "gender", "institute")}),
+        (
+            _("Permissions"),
+            {
+                "fields": (
+                    "is_active",
+                    "is_staff",
+                    "is_superuser",
+                    "groups",
+                    "user_permissions",
+                ),
+            },
+        ),
+        (_("Important dates"), {"fields": ("last_login",)}),
+    )
+    add_fieldsets = (
+        (
+            None,
+            {
+                "classes": ("wide",),
+                "fields": ("email", "password1", "password2"),
+            },
+        ),
+    )
 
 
 admin.site.register(User, UserAdmin)

@@ -1,12 +1,8 @@
-from django.urls import path
+from django.urls import re_path
 
-from .views import ProfileListCreateAPIView, ProfileActivationView, PasswordChangeView
+from .views import CustomTokenCreateView, CustomTokenDestroyView
 
 urlpatterns = [
-    path('profile/', ProfileListCreateAPIView.as_view()),
-    path('profile/account-verification/', ProfileActivationView.as_view({
-        'post': 'create',
-        'patch': 'partial_update',
-    })),
-    path('profile/password/change/', PasswordChangeView.as_view()),
+    re_path(r"^token/login/?$", CustomTokenCreateView.as_view(), name="login"),
+    re_path(r"^token/logout/?$", CustomTokenDestroyView.as_view(), name="logout"),
 ]

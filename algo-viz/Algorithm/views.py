@@ -9,7 +9,7 @@ from .serializers import AlgorithmCategorySerializer, AlgorithmSerializer, Comme
 
 
 class AlgorithmCategoryListAPIView(ListAPIView):
-    queryset = AlgorithmCategory.objects.select_related('parent').all()
+    queryset = AlgorithmCategory.objects.select_related('parent')
     serializer_class = AlgorithmCategorySerializer
     search_fields = ('name', 'parent__name')
     ordering_fields = ('name',)
@@ -17,13 +17,13 @@ class AlgorithmCategoryListAPIView(ListAPIView):
 
 
 class AlgorithmCategoryAPIView(RetrieveAPIView):
-    queryset = AlgorithmCategory.objects.select_related('parent').all()
+    queryset = AlgorithmCategory.objects.select_related('parent')
     serializer_class = AlgorithmCategorySerializer
     lookup_field = 'slug'
 
 
 class AlgorithmListAPIView(ListAPIView):
-    queryset = Algorithm.objects.select_related('category').all()
+    queryset = Algorithm.objects.select_related('category')
     serializer_class = AlgorithmSerializer
     ordering_fields = ('name', 'category__name', 'created_at')
     ordering = ('-created_at',)
@@ -31,14 +31,14 @@ class AlgorithmListAPIView(ListAPIView):
 
 
 class AlgorithmAPIView(RetrieveAPIView):
-    queryset = Algorithm.objects.select_related('category').all()
+    queryset = Algorithm.objects.select_related('category')
     serializer_class = AlgorithmSerializer
     lookup_field = 'slug'
 
 
 class CommentListAPIView(ListAPIView, CreateAPIView):
     lookup_field = 'slug'
-    queryset = Comment.objects.select_related('algorithm').all()
+    queryset = Comment.objects.select_related('algorithm')
     serializer_class = CommentSerializer
     ordering_fields = ('created_at',)
     ordering = ('-created_at',)
