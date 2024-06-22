@@ -1,5 +1,10 @@
 from django.conf import settings
 from djoser.views import TokenCreateView, TokenDestroyView
+from rest_framework.generics import UpdateAPIView
+from rest_framework.permissions import IsAuthenticated
+
+from .models import User
+from .serializers import CustomUserSerializer
 
 
 class CustomTokenCreateView(TokenCreateView):
@@ -27,3 +32,12 @@ class CustomTokenDestroyView(TokenDestroyView):
         response = super().post(request)
         response.delete_cookie(settings.AUTH_COOKIE)
         return response
+
+
+class UpdateAccountView(UpdateAPIView):
+    serializer_class = CustomUserSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def get_object(self):
+        return self.request.user
+
