@@ -1,16 +1,10 @@
-import Image from "next/image";
-import BubbleSort from "@/components/algorithms/sorting/bubble-sort";
-import Link from "next/link";
-import {buttonVariants} from "@/components/ui/button";
-
-export default function Home() {
+export default function Page() {
     return (
         <div>
-            <h1 className={'text-4xl font-bold text-center py-6'}>Welcome to AlgoViz</h1>
-            <div className="text-center">
-                            <Link href={'/sorting/bubblesort'} className={buttonVariants() + ' my-6'}>A sorting algorithm</Link>
-
-            </div>
+            <section className={'text-center'}>
+                <h1 className={'text-5xl font-light'}>Welcome to Algo<span className={'link-color font-bold'}>Viz</span></h1>
+                <blockquote className={'my-4 text-2xl text-gray-600 italic'}>&quot;Visualize and learn algorithms in an interactive and engaging way.&quot;</blockquote>
+            </section>
         </div>
-    );
+    )
 }

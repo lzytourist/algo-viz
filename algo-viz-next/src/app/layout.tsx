@@ -2,29 +2,31 @@ import type {Metadata} from "next";
 import {Inter} from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/navbar";
-import Link from "next/link";
+import Footer from "@/components/footer";
+import React from "react";
+import Provider from "@/redux/provider";
+import {Toaster} from "@/components/ui/toaster";
+import useFetchAuth from "@/hooks/useFetchAuth";
 
 const inter = Inter({subsets: ["latin"]});
 
 export const metadata: Metadata = {
-    title: "Algorithm Visualization and Training - AlgoViz",
+    title: "AlgoViz",
     description: "Learn algorithms efficiently and interactively",
 };
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+export default function RootLayout({children}: Readonly<{ children: React.ReactNode }>) {
     return (
         <html lang="en">
-        <body className={inter.className + ' min-h-screen'}>
-        <div className={'flex justify-between flex-col min-h-screen'}>
+        <body className={inter.className + ' min-h-screen bg-background'}>
+        <Provider>
             <Navbar/>
-            <main>
+            <main className={'container mx-auto my-8'}>
                 {children}
             </main>
-            <footer className={'text-center py-4 bg-slate-950 text-white'}>
-                <p>Copyright &copy; {new Date().getFullYear()}, <Link className={'font-bold'} href={'/'}>AlgoViz</Link>
-                </p>
-            </footer>
-        </div>
+            <Footer/>
+        </Provider>
+        <Toaster/>
         </body>
         </html>
     );
