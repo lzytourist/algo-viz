@@ -5,11 +5,29 @@ import {Input} from "@/components/ui/input";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 import {Button} from "@/components/ui/button";
 import {ButtonLoading} from "@/components/ui/button-loading";
-import useRegister from "@/hooks/useRegister";
+import useProfileUpdate from "@/hooks/useProfileUpdate";
+import {User} from "@/lib/types";
+import {useEffect, useState} from "react";
+import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
+import {cn} from "@/lib/utils";
+import {CalendarIcon} from "@radix-ui/react-icons";
+import {format} from "date-fns";
+import {Calendar} from "@/components/ui/calendar";
 
+export default function ProfileUpdateForm({user}: { user: User }) {
+    const {form, handleSubmit, isLoading, setProfile} = useProfileUpdate();
 
-export default function RegisterForm() {
-    const {form, handleSubmit, isLoading} = useRegister();
+    const [date, setDate] = useState<Date>();
+
+    useEffect(() => {
+        const {first_name, last_name, gender, institute} = user;
+        setProfile({
+            first_name,
+            last_name,
+            gender,
+            institute: institute ? institute : "",
+        });
+    }, []);
 
     return (
         <Form {...form}>
@@ -77,48 +95,9 @@ export default function RegisterForm() {
                             </FormItem>
                         )}
                     />
-                    <FormField
-                        control={form.control}
-                        name={'email'}
-                        render={({field}) => (
-                            <FormItem>
-                                <FormLabel>Email address</FormLabel>
-                                <FormControl>
-                                    <Input placeholder="johndoe@example.com" type={'email'} {...field} />
-                                </FormControl>
-                                <FormMessage/>
-                            </FormItem>
-                        )}
-                    />
-                    <FormField
-                        control={form.control}
-                        name={'password'}
-                        render={({field}) => (
-                            <FormItem>
-                                <FormLabel>Password</FormLabel>
-                                <FormControl>
-                                    <Input placeholder="********" type={'password'} {...field} />
-                                </FormControl>
-                                <FormMessage/>
-                            </FormItem>
-                        )}
-                    />
-                    <FormField
-                        control={form.control}
-                        name={'re_password'}
-                        render={({field}) => (
-                            <FormItem>
-                                <FormLabel>Re-type Password</FormLabel>
-                                <FormControl>
-                                    <Input placeholder="********" type={'password'} {...field} />
-                                </FormControl>
-                                <FormMessage/>
-                            </FormItem>
-                        )}
-                    />
                 </div>
                 {
-                    !isLoading ? <Button type={"submit"} className={'w-full mt-6'}>Sign up</Button>
+                    !isLoading ? <Button type={"submit"} className={'w-full mt-6'}>Save</Button>
                         : <ButtonLoading className={'w-full mt-6'}/>
                 }
 

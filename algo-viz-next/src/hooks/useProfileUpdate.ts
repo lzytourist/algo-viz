@@ -1,52 +1,55 @@
 import {z} from "zod";
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
-import {useRouter} from "next/navigation";
-import {useRegisterMutation} from "@/redux/features/authApiSlice";
+import {useUpdateProfileMutation} from "@/redux/features/authApiSlice";
 import {useToast} from "@/components/ui/use-toast";
-import {Errors} from "@/lib/types";
+import {Errors, User} from "@/lib/types";
+import {useAppDispatch} from "@/redux/hooks";
+import {setUser} from "@/redux/features/authSlice";
 
 export default function useRegister() {
     const formSchema = z.object({
         first_name: z.string().min(2, 'Must contain at least 2 characters').max(200, 'Must contain less than 200 characters'),
         last_name: z.string().min(1, 'Must contain at least 2 characters').max(200, 'Must contain less than 200 characters'),
-        email: z.string().email().max(255),
-        password: z.string().min(8, 'Must contain at least 8 characters').max(50, 'Maximum 50 characters'),
-        re_password: z.string(),
         gender: z.string(),
-        institute: z.string().min(0)
-    }).refine((data) => data.password === data.re_password, {
-        message: 'Password does not match',
-        path: ['re_password']
+        institute: z.string().min(0),
     });
+
+    const dispatch = useAppDispatch();
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
             first_name: "",
             last_name: "",
-            email: "",
-            password: "",
-            re_password: "",
-            gender: "male",
-            institute: ""
+            gender: "",
+            institute: "",
         }
     });
 
-    const router = useRouter();
-    const [register, {isLoading}] = useRegisterMutation();
+    const setProfile = ({first_name, last_name, gender, institute}: {
+        first_name: string,
+        last_name: string,
+        gender: string,
+        institute: string,
+    }) => {
+        form.setValue('first_name', first_name);
+        form.setValue('last_name', last_name);
+        form.setValue('gender', gender);
+        form.setValue('institute', institute);
+    };
+
+    const [updateProfile, {isLoading}] = useUpdateProfileMutation();
     const {toast} = useToast();
 
     const handleSubmit = (values: z.infer<typeof formSchema>) => {
-        register({...values})
+        updateProfile({...values})
             .unwrap()
-            .then(() => {
+            .then((res: User) => {
                 toast({
-                    title: 'Registration successful!',
-                    description: 'Activation link sent to your email address.'
+                    title: 'Profile updated',
                 });
-
-                router.push('/login');
+                dispatch(setUser(JSON.stringify(res)));
             })
             .catch((e) => {
                 if (e.status === 400) {
@@ -64,6 +67,7 @@ export default function useRegister() {
     return {
         form,
         handleSubmit,
-        isLoading
+        isLoading,
+        setProfile,
     }
 }

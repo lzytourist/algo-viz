@@ -32,7 +32,7 @@ export default function Page() {
 
     return (
         <div className={'flex justify-center'}>
-            <Card className={'max-w-[600px]'}>
+            <Card className={'max-w-[600px] rounded-sm'}>
                 <CardHeader>
                     <CardTitle>Reset password</CardTitle>
                     <CardDescription>Please enter your registered email address to receive a password change

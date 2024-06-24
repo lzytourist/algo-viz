@@ -57,6 +57,13 @@ const authApiSlice = apiSlice.injectEndpoints({
                 body: {uid, token, new_password, re_new_password}
             })
         }),
+        updateProfile: builder.mutation({
+            query: ({first_name, last_name, gender, date_of_birth, institute}) => ({
+                url: '/auth/users/me/',
+                method: 'PATCH',
+                body: {first_name, last_name, gender, date_of_birth, institute}
+            })
+        }),
     })
 });
 
@@ -69,4 +76,5 @@ export const {
     useLogoutMutation,
     useResetPasswordMutation,
     useResetPasswordConfirmMutation,
+    useUpdateProfileMutation,
 } = authApiSlice;
