@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import {Avatar, AvatarFallback} from "@/components/ui/avatar";
 import {AvatarIcon} from "@radix-ui/react-icons";
-import {useLogoutMutation} from "@/redux/features/authApiSlice";
+import {useLogoutMutation} from "@/redux/features/api/authApiSlice";
 import {setLogout} from "@/redux/features/authSlice";
 import useFetchAuth from "@/hooks/useFetchAuth";
 
@@ -23,11 +23,17 @@ export default function Navbar() {
     const pathname = usePathname();
     const router = useRouter();
 
+    const {isLoading} = useAppSelector(state => state.auth);
     const dispatch = useAppDispatch();
     const {isAuthenticated, user} = useAppSelector(state => state.auth);
     const [logout] = useLogoutMutation();
 
-    const isActive = (path: string) => pathname == path;
+    const isActive = (path: string, starts: boolean = false) => {
+        if (starts) {
+            return pathname.startsWith(path);
+        }
+        return pathname == path;
+    };
 
     const handleLogout = () => {
         logout(undefined)
@@ -96,23 +102,25 @@ export default function Navbar() {
             className={'sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60'}>
             <div className={'container h-16 flex justify-between items-center'}>
                 <Link href={'/'}>
-                    <h1 className={'text-4xl font-light'}>Alog<span className={'link-color font-bold'}>Viz</span></h1>
+                    <h1 className={'text-4xl font-light'}>Alog<span className={'app-text-color font-bold'}>Viz</span></h1>
                 </Link>
                 <ul className={'flex items-center'}>
                     <li>
                         <Link href={'/'}
-                              className={'py-4 px-2' + (pathname.length == null || pathname.length == 1 ? ' font-medium link-color' : '')}>Home</Link>
+                              className={'py-4 px-2' + (pathname.length == null || pathname.length == 1 ? ' font-medium app-text-color' : '')}>Home</Link>
                     </li>
                     <li>
                         <Link href={'/algorithms'}
-                              className={'py-4 px-2' + (isActive('/algorithms') ? ' font-medium link-color' : '')}>Algorithms</Link>
+                              className={'py-4 px-2' + (isActive('/algorithms', true) ? ' font-medium app-text-color' : '')}>Algorithms</Link>
                     </li>
                     <li>
                         <Link href={'/about'}
-                              className={'py-4 px-2' + (isActive('/about') ? ' font-medium link-color' : '')}>About</Link>
+                              className={'py-4 px-2' + (isActive('/about') ? ' font-medium app-text-color' : '')}>About</Link>
                     </li>
                 </ul>
-                {isAuthenticated ? AUTH_LINKS : GUEST_LINKS}
+                {
+                    !isLoading && (isAuthenticated ? AUTH_LINKS : GUEST_LINKS)
+                }
             </div>
         </nav>
     )

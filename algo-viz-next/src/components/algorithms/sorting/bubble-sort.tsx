@@ -80,7 +80,7 @@ const BubbleSort = () => {
 
     return (
         <div>
-            <div className={'border-2 border-dashed mx-4 flex justify-center items-end min-h-[305px]'}>
+            <div className={'border-2 border-dashed flex justify-center items-end min-h-[305px]'}>
                 {array.map((value: number, idx: number) => (
                     <div
                         className={

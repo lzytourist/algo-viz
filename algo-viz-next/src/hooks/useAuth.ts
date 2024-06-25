@@ -1,4 +1,4 @@
-import {useGetUserMutation} from "@/redux/features/authApiSlice";
+import {useGetUserMutation} from "@/redux/features/api/authApiSlice";
 import {useEffect} from "react";
 import {User} from "@/lib/types";
 import {useAppDispatch, useAppSelector} from "@/redux/hooks";

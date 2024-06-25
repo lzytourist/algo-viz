@@ -1,11 +1,10 @@
 'use client'
 
 import {ReloadIcon} from "@radix-ui/react-icons";
-import {useEffect, useState} from "react";
-import {useActivationMutation} from "@/redux/features/authApiSlice";
+import {useEffect, useRef, useState} from "react";
+import {useActivationMutation} from "@/redux/features/api/authApiSlice";
 import {useToast} from "@/components/ui/use-toast";
 import {useRouter} from "next/navigation";
-import {Button} from "@/components/ui/button";
 import ResendActivation from "@/components/forms/resend-activation";
 
 interface Props {
@@ -21,23 +20,30 @@ export default function Page({params: {uid, token}}: Props) {
     const router = useRouter();
     const [resend, setResend] = useState<boolean>(false);
 
+    const initialized = useRef<boolean>(false);
+
     useEffect(() => {
-        activation({uid, token})
-            .unwrap()
-            .then(() => {
-                toast({
-                    title: 'Account activated!',
-                    description: 'Login to your account.'
+        if (!initialized.current) {
+            initialized.current = true;
+
+            activation({uid, token})
+                .unwrap()
+                .then(() => {
+                    toast({
+                        title: 'Account activated!',
+                        description: 'Login to your account.'
+                    });
+                    router.push('/login');
+                })
+                .catch((e) => {
+                    console.log(e.status)
+                    toast({
+                        title: 'Activation failed!',
+                        variant: 'destructive'
+                    });
+                    setResend(true);
                 });
-                router.push('/login');
-            })
-            .catch(() => {
-                toast({
-                    title: 'Activation failed!',
-                    variant: 'destructive'
-                });
-                setResend(true);
-            });
+        }
     }, []);
 
     return (
@@ -48,7 +54,7 @@ export default function Page({params: {uid, token}}: Props) {
                 }
             </h1>
             {!resend && <ReloadIcon className={'animate-spin mt-6 h-8 w-8 text-zinc-600'}/>}
-            {resend && <ResendActivation />}
+            {resend && <ResendActivation/>}
         </div>
     )
 }

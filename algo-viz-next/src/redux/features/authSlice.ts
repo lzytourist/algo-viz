@@ -9,7 +9,7 @@ interface AuthState {
 
 const initialState: AuthState = {
     isAuthenticated: false,
-    isLoading: false,
+    isLoading: true,
     user: null
 }
 
@@ -23,11 +23,8 @@ const authSlice = createSlice({
         setLogout: state => {
             state.isAuthenticated = false;
         },
-        finishLoading: state => {
+        finishInitialLoading: state => {
             state.isLoading = false;
-        },
-        startLoading: state => {
-            state.isLoading = true;
         },
         setUser: (state, action) => {
             state.user = JSON.parse(action.payload) as User;
@@ -38,8 +35,7 @@ const authSlice = createSlice({
 export const {
     setAuth,
     setLogout,
-    startLoading,
-    finishLoading,
+    finishInitialLoading,
     setUser
 } = authSlice.actions;
 

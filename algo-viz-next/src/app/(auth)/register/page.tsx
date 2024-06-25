@@ -4,17 +4,18 @@ import Link from "next/link";
 
 export default function Page() {
     return (
-        <div className={'flex justify-center flex-1'}>
-            <Card className={'rounded-sm shadow-none w-[600px]'}>
+        <div className={'mx-auto w-full md:w-3/4 lg:w-2/5'}>
+            <Card className={'rounded-sm shadow-none'}>
                 <CardHeader>
-                    <CardTitle>Registration</CardTitle>
+                    <CardTitle className={'text-3xl font-light'}>Registration</CardTitle>
                     <CardDescription>Create your account</CardDescription>
                 </CardHeader>
                 <CardContent>
                     <RegisterForm/>
                 </CardContent>
                 <CardFooter>
-                    <p>Already have an account? <Link className={'link-color'} href={'/login'}>Login here</Link></p>
+                    <p className={'text-sm'}>Already have an account? <Link className={'app-text-color'}
+                                                                            href={'/login'}>Login here</Link></p>
                 </CardFooter>
             </Card>
         </div>

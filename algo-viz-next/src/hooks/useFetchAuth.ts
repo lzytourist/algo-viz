@@ -1,10 +1,10 @@
 'use client'
 
-import {useGetUserMutation} from "@/redux/features/authApiSlice";
-import {useEffect} from "react";
+import {useGetUserMutation} from "@/redux/features/api/authApiSlice";
+import {useEffect, useRef} from "react";
 import {User} from "@/lib/types";
 import {useAppDispatch, useAppSelector} from "@/redux/hooks";
-import {setAuth, startLoading, finishLoading, setUser} from "@/redux/features/authSlice";
+import {setAuth, finishInitialLoading, setUser} from "@/redux/features/authSlice";
 
 
 export default function useFetchAuth() {
@@ -13,8 +13,6 @@ export default function useFetchAuth() {
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        dispatch(startLoading());
-
         if (!user) {
             getUser(undefined)
                 .unwrap()
@@ -22,9 +20,10 @@ export default function useFetchAuth() {
                     dispatch(setAuth());
                     dispatch(setUser(JSON.stringify(res)));
                 })
-                .catch(() => {})
+                .catch(() => {
+                })
                 .finally(() => {
-                    dispatch(finishLoading());
+                    dispatch(finishInitialLoading());
                 });
         }
     }, []);

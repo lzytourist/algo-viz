@@ -1,7 +1,7 @@
 import {z} from "zod";
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
-import {useUpdateProfileMutation} from "@/redux/features/authApiSlice";
+import {useUpdateProfileMutation} from "@/redux/features/api/authApiSlice";
 import {useToast} from "@/components/ui/use-toast";
 import {Errors, User} from "@/lib/types";
 import {useAppDispatch} from "@/redux/hooks";

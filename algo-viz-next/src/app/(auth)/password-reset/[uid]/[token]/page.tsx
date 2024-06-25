@@ -13,8 +13,8 @@ interface Props {
 export default function Page({params: {uid, token}}: Props) {
 
     return (
-        <div className={'flex justify-center'}>
-            <Card className={'max-w-[600px] rounded-sm'}>
+        <div className={'mx-auto w-full md:w-3/4 lg:w-2/5'}>
+            <Card className={'rounded-sm shadow-none'}>
                 <CardHeader>
                     <CardTitle>Reset password</CardTitle>
                     <CardDescription>Please enter your registered email address to receive a password change

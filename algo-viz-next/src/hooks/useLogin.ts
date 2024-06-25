@@ -2,7 +2,7 @@ import {z} from "zod";
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {useRouter} from "next/navigation";
-import {useLoginMutation} from "@/redux/features/authApiSlice";
+import {useLoginMutation} from "@/redux/features/api/authApiSlice";
 import {useToast} from "@/components/ui/use-toast";
 import {useAppDispatch} from "@/redux/hooks";
 import {setAuth} from "@/redux/features/authSlice";
@@ -10,7 +10,7 @@ import {setAuth} from "@/redux/features/authSlice";
 export default function useLogin() {
     const formSchema = z.object({
         email: z.string().email().max(255),
-        password: z.string().min(8, 'Must contain at least 8 characters').max(50, 'Maximum 50 characters'),
+        password: z.string().min(1, 'Password is required').max(200),
 
     });
 

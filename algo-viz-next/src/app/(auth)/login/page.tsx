@@ -4,17 +4,17 @@ import LoginForm from "@/components/forms/login-form";
 
 export default function Page() {
     return (
-        <div className={'flex justify-center flex-1'}>
-            <Card className={'rounded-sm shadow-none w-[600px]'}>
+        <div className={'mx-auto w-full md:w-3/4 lg:w-2/5'}>
+            <Card className={'rounded-sm shadow-none'}>
                 <CardHeader>
-                    <CardTitle>Login</CardTitle>
+                    <CardTitle className={'text-3xl font-light'}>Login</CardTitle>
                     <CardDescription>Access your account</CardDescription>
                 </CardHeader>
                 <CardContent>
                     <LoginForm/>
                 </CardContent>
                 <CardFooter>
-                    <p>Don&apos;t have an account? <Link className={'link-color'} href={'/register'}>Register here</Link></p>
+                    <p className={'text-sm'}>Don&apos;t have an account? <Link className={'app-text-color'} href={'/register'}>Register here</Link></p>
                 </CardFooter>
             </Card>
         </div>

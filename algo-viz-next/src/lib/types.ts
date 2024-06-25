@@ -21,3 +21,19 @@ export interface User {
 export interface Errors {
     [key: string]: string[]
 }
+
+export interface Category {
+    name: string,
+    slug: string,
+    parent: Category | null
+}
+
+export interface Algorithm {
+    name: string,
+    slug: string,
+    description: string,
+    category: Category,
+    component: string,
+    created_at: string,
+    updated_at: string,
+}

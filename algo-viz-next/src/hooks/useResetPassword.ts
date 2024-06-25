@@ -2,7 +2,7 @@ import {z} from "zod";
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {useRouter} from "next/navigation";
-import {useResetPasswordConfirmMutation} from "@/redux/features/authApiSlice";
+import {useResetPasswordConfirmMutation} from "@/redux/features/api/authApiSlice";
 import {useToast} from "@/components/ui/use-toast";
 import {useAppDispatch} from "@/redux/hooks";
 import {Errors} from "@/lib/types";

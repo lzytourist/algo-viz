@@ -37,7 +37,7 @@ export default function LoginForm() {
                             <FormItem>
                                 <div className={'flex justify-between items-center mt-2'}>
                                     <FormLabel>Password</FormLabel>
-                                    <Link href={'/password-reset'} className={'link-color font-light text-sm'}>Forgot password?</Link>
+                                    <Link href={'/password-reset'} className={'app-text-color font-light text-sm'}>Forgot password?</Link>
                                 </div>
                                 <FormControl>
                                     <Input placeholder="********" type={'password'} {...field} />

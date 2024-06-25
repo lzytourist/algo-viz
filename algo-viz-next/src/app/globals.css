@@ -76,6 +76,10 @@
     }
 }
 
-.link-color {
-    @apply text-red-500;
+.app-text-color {
+    @apply text-indigo-600;
+}
+
+.app-bg-color {
+    @apply bg-indigo-600;
 }

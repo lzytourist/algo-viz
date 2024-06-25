@@ -3,7 +3,7 @@
 import {FormEvent, useState} from "react";
 import {Input} from "@/components/ui/input";
 import {Button} from "@/components/ui/button";
-import {useResendActivationMutation} from "@/redux/features/authApiSlice";
+import {useResendActivationMutation} from "@/redux/features/api/authApiSlice";
 import {useToast} from "@/components/ui/use-toast";
 
 
