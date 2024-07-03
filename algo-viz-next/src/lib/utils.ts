@@ -6,6 +6,19 @@ export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs))
 }
 
+export function formatDateTime(datetime: string) {
+    const date = new Date(datetime);
+    return Intl.DateTimeFormat('ban', {
+        hour: "numeric",
+        minute: "numeric",
+        second: "numeric",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        timeZone: "Australia/Sydney",
+    }).format(date);
+}
+
 export enum SortingState {
     NOT_SORTED,
     STARTED,

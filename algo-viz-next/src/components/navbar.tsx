@@ -102,7 +102,7 @@ export default function Navbar() {
             className={'sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60'}>
             <div className={'container h-16 flex justify-between items-center'}>
                 <Link href={'/'}>
-                    <h1 className={'text-4xl font-light'}>Alog<span className={'app-text-color font-bold'}>Viz</span></h1>
+                    <h1 className={'text-4xl font-light'}>Algo<span className={'app-text-color font-bold'}>Viz</span></h1>
                 </Link>
                 <ul className={'flex items-center'}>
                     <li>

@@ -1,50 +1,48 @@
 import {z} from "zod";
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
-import {useRouter} from "next/navigation";
-import {useLoginMutation} from "@/redux/features/api/authApiSlice";
 import {useToast} from "@/components/ui/use-toast";
 import {useAppDispatch} from "@/redux/hooks";
 import {setAuth} from "@/redux/features/authSlice";
+import {usePostCommentMutation} from "@/redux/features/api/algorithmsApislice";
 
-export default function useLogin() {
+export default function useAddComment({slug, fetchComments}: {slug: string, fetchComments: Function}) {
     const formSchema = z.object({
-        email: z.string().email().max(255),
-        password: z.string().min(1, 'Password is required').max(200),
+        text: z.string().min(1, 'Comment is required').max(255),
     });
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            email: "",
-            password: ""
+            text: ""
         }
     });
 
-    const router = useRouter();
-    const [login, {isLoading}] = useLoginMutation();
+    const [postComment, {isLoading}] = usePostCommentMutation();
     const {toast} = useToast();
 
     const dispatch = useAppDispatch();
 
     const handleSubmit = (values: z.infer<typeof formSchema>) => {
-        login({...values})
+        postComment({...values, slug})
             .unwrap()
             .then(() => {
                 dispatch(setAuth());
 
                 toast({
-                    title: 'Log in successful!',
+                    title: 'Comment posted!',
                 });
-                router.push('/dashboard');
+
+                fetchComments();
+
+                form.setValue('text', '');
             })
             .catch(() => {
                 toast({
-                    title: 'Wrong credentials!',
-                    description: 'If you think this is a mistake, please contact us.',
+                    title: 'Comment could not be posted',
                     variant: 'destructive'
                 })
-            })
+            });
     };
 
     return {

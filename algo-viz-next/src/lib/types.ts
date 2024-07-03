@@ -25,7 +25,8 @@ export interface Errors {
 export interface Category {
     name: string,
     slug: string,
-    parent: Category | null
+    parent: Category | null,
+    children: Category[] | null | undefined
 }
 
 export interface Algorithm {
@@ -36,4 +37,10 @@ export interface Algorithm {
     component: string,
     created_at: string,
     updated_at: string,
+}
+
+export interface Comment {
+    user: string,
+    text: string,
+    created_at: string
 }

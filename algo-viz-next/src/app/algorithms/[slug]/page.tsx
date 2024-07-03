@@ -45,10 +45,10 @@ export default function Page({params: {slug}}: { params: { slug: string } }) {
                 <AlgorithmComponent/>
             </section>
 
-            <section className={'my-4'} dangerouslySetInnerHTML={{__html: data.description}}>
+            <section className={'my-6'} dangerouslySetInnerHTML={{__html: data.description}}>
             </section>
 
-            <section>
+            <section className={'my-6'}>
                 <Link href={'/algorithms'}>
                     <Button><ChevronLeftIcon/> Go back</Button>
                 </Link>

@@ -25,6 +25,19 @@ const algorithmsApiSlice = apiSlice.injectEndpoints({
                 url: `/algorithms/categories/${slug}/`
             }),
         }),
+        getComments: builder.query({
+            query: ({slug, page, pageSize})=> ({
+                url: `/algorithms/${slug}/comments/`,
+                params: {page, pageSize}
+            }),
+        }),
+        postComment: builder.mutation({
+            query: ({text, slug}) => ({
+                url: `/algorithms/${slug}/comments/`,
+                method: 'POST',
+                body: {text},
+            }),
+        })
     }),
 });
 
@@ -33,4 +46,6 @@ export const {
     useGetAlgorithmQuery,
     useGetCategoriesQuery,
     useGetCategoryQuery,
+    useGetCommentsQuery,
+    usePostCommentMutation,
 } = algorithmsApiSlice;

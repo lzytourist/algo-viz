@@ -1,4 +1,4 @@
-import {Algorithm, Category} from "@/lib/types";
+import {Algorithm, Category, Comment} from "@/lib/types";
 import {createSlice} from "@reduxjs/toolkit";
 
 interface AlgorithmsState {
@@ -13,6 +13,12 @@ interface AlgorithmsState {
         next: string | undefined | null,
         prev: string | undefined | null,
         results: Category[]
+    },
+    comments: {
+        count: number,
+        next: string | undefined | null,
+        prev: string | undefined | null,
+        results: Comment[]
     }
 }
 
@@ -24,6 +30,12 @@ const initialState: AlgorithmsState = {
         results: []
     },
     categories: {
+        count: 0,
+        next: null,
+        prev: null,
+        results: []
+    },
+    comments: {
         count: 0,
         next: null,
         prev: null,
@@ -40,13 +52,17 @@ const algorithmsSlice = createSlice({
         },
         setCategories: (state, action) => {
             state.categories = action.payload;
-        }
+        },
+        setComments: (state, action) => {
+            state.comments = action.payload;
+        },
     }
 });
 
 export const {
     setAlgorithms,
     setCategories,
+    setComments,
 } = algorithmsSlice.actions;
 
 export default algorithmsSlice.reducer;
