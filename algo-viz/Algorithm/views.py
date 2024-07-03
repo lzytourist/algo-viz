@@ -2,8 +2,6 @@ from django.db import IntegrityError
 from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveAPIView
 from rest_framework.permissions import IsAuthenticated, AllowAny
 
-from AlgoViz.permissions import IsVerified
-
 from .models import AlgorithmCategory, Algorithm, Comment, UserProgress
 from .serializers import AlgorithmCategorySerializer, AlgorithmSerializer, CommentSerializer, UserProgressSerializer
 
@@ -20,6 +18,16 @@ class AlgorithmCategoryAPIView(RetrieveAPIView):
     queryset = AlgorithmCategory.objects.select_related('parent')
     serializer_class = AlgorithmCategorySerializer
     lookup_field = 'slug'
+
+    def retrieve(self, request, *args, **kwargs):
+        response = super().retrieve(request, *args, **kwargs)
+
+        response.data['children'] = self.get_serializer(
+            instance=self.get_queryset().filter(parent__slug=kwargs.get('slug')),
+            many=True
+        ).data
+
+        return response
 
 
 class AlgorithmListAPIView(ListAPIView):
@@ -45,7 +53,7 @@ class CommentListAPIView(ListAPIView, CreateAPIView):
 
     def get_permissions(self):
         if self.request.method == 'POST':
-            return [IsAuthenticated(), IsVerified()]
+            return [IsAuthenticated()]
         return [AllowAny()]
 
     def get_queryset(self):
@@ -63,7 +71,7 @@ class UserProgressAPIView(RetrieveAPIView, CreateAPIView):
 
     def get_permissions(self):
         if self.request.method == 'POST':
-            return [IsAuthenticated(), IsVerified()]
+            return [IsAuthenticated()]
         return [AllowAny()]
 
     def perform_create(self, serializer):
