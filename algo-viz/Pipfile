@@ -11,6 +11,8 @@ django-cors-headers = "*"
 mysqlclient = "*"
 django-tinymce = "*"
 django-filter = "*"
+psycopg2-binary = "*"
+python-dotenv = "*"
 
 [dev-packages]
 

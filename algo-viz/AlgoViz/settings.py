@@ -11,11 +11,14 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 import os
 from pathlib import Path
+from dotenv import dotenv_values
 
 from django.contrib import staticfiles
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+ENV = dotenv_values(".env")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
@@ -95,13 +98,13 @@ WSGI_APPLICATION = 'AlgoViz.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'algo_viz',
-        'USER': 'algo_viz_user',
-        'PASSWORD': 'algo_viz_pass',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'HOST': ENV.get('POSTGRES_HOST'),
+        'NAME': ENV.get('POSTGRES_DATABASE'),
+        'USER': ENV.get('POSTGRES_USER'),
+        'PASSWORD': ENV.get('POSTGRES_PASSWORD'),
         'OPTIONS': {
-            'charset': 'utf8mb4',
-            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+            'client_encoding': 'utf8mb4',
         }
     }
 }
@@ -133,7 +136,7 @@ TIME_ZONE = 'Asia/Dhaka'
 
 USE_I18N = True
 
-USE_TZ = False  # TODO: Set true
+USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
@@ -151,10 +154,10 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Email
-EMAIL_HOST = 'sandbox.smtp.mailtrap.io'
-EMAIL_HOST_USER = 'c9715b797d2c80'
-EMAIL_HOST_PASSWORD = '19cf15155f5db0'
-EMAIL_PORT = '2525'
+EMAIL_HOST = ENV.get('EMAIL_HOST')
+EMAIL_HOST_USER = ENV.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = ENV.get('EMAIL_HOST_PASSWORD')
+EMAIL_PORT = ENV.get('EMAIL_PORT')
 
 EMAIL_VERIFICATION_MAIL_DELAY = 5  # Minutes
 
