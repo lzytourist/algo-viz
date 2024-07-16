@@ -154,10 +154,15 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Email
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = ENV.get('EMAIL_HOST')
 EMAIL_HOST_USER = ENV.get('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = ENV.get('EMAIL_HOST_PASSWORD')
 EMAIL_PORT = ENV.get('EMAIL_PORT')
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+
+DEFAULT_FROM_EMAIL = f'AlgoViz <{EMAIL_HOST_USER}>'
 
 EMAIL_VERIFICATION_MAIL_DELAY = 5  # Minutes
 
