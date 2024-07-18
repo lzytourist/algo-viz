@@ -188,6 +188,9 @@ DJOSER = {
     'SERIALIZERS': {
         'user': 'Account.serializers.CustomUserSerializer',
         'current_user': 'Account.serializers.CustomUserSerializer',
+    },
+    'EMAIL': {
+        'activation': 'Account.email.AccountActivationEmail',
     }
 }
 
@@ -204,11 +207,15 @@ TINYMCE_DEFAULT_CONFIG = {
                "removeformat | help",
 }
 
-DOMAIN = 'localhost:3000'  # Account activation email and password rest
-
 AUTH_COOKIE = 'token'
 AUTH_COOKIE_MAX_AGE = 60 * 60 * 24
 AUTH_COOKIE_SECURE = False
 AUTH_COOKIE_HTTPONLY = True
 AUTH_COOKIE_SAMESITE = None
 AUTH_COOKIE_PATH = '/'
+
+EMAIL_FRONTEND_PROTOCOL = ENV.get('EMAIL_FRONTEND_PROTOCOL')
+EMAIL_FRONTEND_DOMAIN = ENV.get('EMAIL_FRONTEND_DOMAIN')
+EMAIL_FRONTEND_SITE_NAME = ENV.get('EMAIL_FRONTEND_SITE_NAME')
+# SITE_NAME = EMAIL_FRONTEND_SITE_NAME
+# DOMAIN = EMAIL_FRONTEND_DOMAIN
