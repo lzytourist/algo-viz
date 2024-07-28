@@ -38,7 +38,27 @@ class CommentSerializer(serializers.ModelSerializer):
         return f"{obj.user.first_name} {obj.user.last_name}"
 
 
+class UserProgressAlgorithmSerializer(serializers.ModelSerializer):
+    category = AlgorithmCategorySerializer(read_only=True)
+
+    class Meta:
+        model = Algorithm
+        fields = ('name', 'slug', 'category')
+        depth = 1
+
+
 class UserProgressSerializer(serializers.ModelSerializer):
+    topic = UserProgressAlgorithmSerializer(read_only=True, source='algorithm')
+
+    def validate(self, attrs):
+        slug = self.context['request'].data.get('slug')
+        print(slug)
+        if not slug:
+            raise serializers.ValidationError('Slug is required')
+        if not Algorithm.objects.filter(slug=slug).exists():
+            raise serializers.ValidationError('Algorithm does not exist')
+        return attrs
+
     class Meta:
         model = UserProgress
         exclude = ('id',)

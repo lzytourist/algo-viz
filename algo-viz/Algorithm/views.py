@@ -36,6 +36,7 @@ class AlgorithmListAPIView(ListAPIView):
     ordering_fields = ('name', 'category__name', 'created_at')
     ordering = ('-created_at',)
     search_fields = ('name', 'category__name')
+    filterset_fields = ('category__slug',)
 
 
 class AlgorithmAPIView(RetrieveAPIView):
@@ -64,22 +65,26 @@ class CommentListAPIView(ListAPIView, CreateAPIView):
         serializer.save(user=self.request.user, algorithm=algorithm)
 
 
-class UserProgressAPIView(RetrieveAPIView, CreateAPIView):
+class UserProgressAPIView(RetrieveAPIView):
     serializer_class = UserProgressSerializer
-    queryset = UserProgress.objects
+    queryset = UserProgress.objects.all()
+    permission_classes = [IsAuthenticated]
     lookup_url_kwarg = 'slug'
+    lookup_field = 'algorithm__slug'
 
-    def get_permissions(self):
-        if self.request.method == 'POST':
-            return [IsAuthenticated()]
-        return [AllowAny()]
+
+class UserProgressListCreateAPIView(ListAPIView, CreateAPIView):
+    serializer_class = UserProgressSerializer
+    queryset = UserProgress.objects.all()
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset.filter(user=self.request.user)
 
     def perform_create(self, serializer):
         try:
-            algorithm = Algorithm.objects.get(slug=self.kwargs['slug'])
+            algorithm = Algorithm.objects.get(slug=self.request.data.get('slug'))
             serializer.save(user=self.request.user, algorithm=algorithm)
         except IntegrityError:
             pass
-
-    def get_object(self):
-        return self.queryset.filter(user=self.request.user).filter(algorithm__slug=self.kwargs['slug'])

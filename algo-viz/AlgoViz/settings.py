@@ -97,15 +97,25 @@ WSGI_APPLICATION = 'AlgoViz.wsgi.application'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    #     'HOST': ENV.get('POSTGRES_HOST'),
+    #     'NAME': ENV.get('POSTGRES_DATABASE'),
+    #     'USER': ENV.get('POSTGRES_USER'),
+    #     'PASSWORD': ENV.get('POSTGRES_PASSWORD'),
+    #     'OPTIONS': {
+    #         'client_encoding': 'utf8mb4',
+    #     }
+    # }
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'HOST': ENV.get('POSTGRES_HOST'),
-        'NAME': ENV.get('POSTGRES_DATABASE'),
-        'USER': ENV.get('POSTGRES_USER'),
-        'PASSWORD': ENV.get('POSTGRES_PASSWORD'),
-        'OPTIONS': {
-            'client_encoding': 'utf8mb4',
-        }
+        'ENGINE': 'django.db.backends.mysql',
+        'HOST': 'localhost',
+        'NAME': 'algo_viz',
+        'USER': 'algo_viz_user',
+        'PASSWORD': 'algo_viz_pass',
+        # 'OPTIONS': {
+        #     'init_command': 'SET sql_mode="TRANS"',
+        # }
     }
 }
 
@@ -136,7 +146,7 @@ TIME_ZONE = 'Asia/Dhaka'
 
 USE_I18N = True
 
-USE_TZ = True
+USE_TZ = False
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
@@ -170,6 +180,7 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         # 'rest_framework.authentication.TokenAuthentication',
         'Account.authentication.CustomTokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
     ),
     'DEFAULT_FILTER_BACKENDS': (
         'django_filters.rest_framework.DjangoFilterBackend',
@@ -191,6 +202,7 @@ DJOSER = {
     },
     'EMAIL': {
         'activation': 'Account.email.AccountActivationEmail',
+        'password_reset': 'Account.email.AccountPasswordResetEmail',
     }
 }
 
